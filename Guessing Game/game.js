@@ -1,29 +1,40 @@
 // program data:
-var number = 22;
+var number = Math.floor(Math.random() * 100);
 var guess;
 var limit = 5;
-var won = false;
+var won =  false;
+var guesses = [];
 
-
-
-for (i = 1; i <= limit; i++){
-    // prompt user for their guess:
-    guess = prompt("Please guess a number: ");
-
+// game control loop - iterates for each try
+for (var i = 1; i <= limit; i++){
+    // prompt user for their guess
+    do{
+        guess = parseInt(prompt("Guess a number"));
+    } while(isNaN(guess) || isPreviousGuess(guess));
+    
     // if correct: let the user know they won
+    if(guess == number){
+        document.write("Correct! You won.");
+        won = true;
+        break;
+    }
+    // if incorrect: add number to guesses array
+    else{
+        guesses[i] = guess;
+        alert("incorrect. \nYou have guessed: " + guesses.toString() + "\nTries remaining: " + (limit - i));
+    }
+}
 
-        if (guess == number){
-            document.write("Congratulations, that guess is correct! You win!");
-            won = true;
-            break;
-        }
+// if the user ran out of tries, let them know the game is over
+if(!won){
+    document.write("Sorry, you ran out of tries. Game over. The correct number was: " + number);
+}
 
-        // if incorrect: let the user know
-        else{
-            alert("I'm sorry, that guess is incorrect. You have " + (limit - i) + " guesses remaining.");
-
+function isPreviousGuess(){
+    for(var i = 1; i < guesses.length; i++){
+        if(guesses[i] == guess){
+            return true;
         }
     }
-if (!won){
-    document.write("I'm sorry, you have no more guesses. Better luck next time.");
+    return false;
 }
